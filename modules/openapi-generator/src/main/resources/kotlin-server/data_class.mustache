@@ -1,5 +1,6 @@
 {{#isKtor}}
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.Contextual
 {{/isKtor}}
 {{^isKtor}}
     {{#parcelizeModels}}
@@ -39,9 +40,9 @@ import java.io.Serializable
 @Serializable
 {{#hasVars}}data {{/hasVars}}class {{classname}}(
 {{#requiredVars}}
-{{>data_class_req_var}}{{^-last}},
+    {{#isUuid}}@Contextual {{/isUuid}}val {{name}}: {{{dataType}}}{{^-last}},
 {{/-last}}{{/requiredVars}}{{#hasRequired}}{{#hasOptional}},
-{{/hasOptional}}{{/hasRequired}}{{#optionalVars}}{{>data_class_opt_var}}{{^-last}},
+{{/hasOptional}}{{/hasRequired}}{{#optionalVars}}    {{#isUuid}}@Contextual {{/isUuid}}val {{name}}: {{{dataType}}}? = null{{^-last}},
 {{/-last}}{{/optionalVars}}
 )
 {{#vendorExtensions.x-has-data-class-body}}
